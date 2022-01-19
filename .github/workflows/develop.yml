@@ -4,9 +4,20 @@ on:
       - develop
 name: 🚀 Deploy website on push
 jobs:
-  web-deploy:
+  web-msg:
     name: 🎉 Deploy
     runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Run a one-line script
+      run: echo Initial push Arthur!
+
+  web-develop:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+      url: 'tecnosisweb.com.br/pipeline/dev'
+    needs: web-msg
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2
@@ -18,3 +29,25 @@ jobs:
         username: ${{ secrets.ftp_username }}
         password: ${{ secrets.ftp_password }}
         server-dir: pipeline/develop/
+
+  web-msg-final:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: hmg
+      url: 'tecnosisweb.com.br/pipeline/dev'
+    needs: web-develop
+    steps:
+    - name: 🚚 Finaly
+      run: echo Finaly push Arthur!
+
+  web-prd:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: prd
+      url: 'tecnosisweb.com.br/pipeline/dev'
+    needs: web-msg-final
+    steps:
+    - name: 🚚 Finaly
+      run: echo Finaly push Arthur PRD!
